@@ -1,7 +1,7 @@
 'use client'
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { useRouter } from "next/navigation";
 import toast from 'react-hot-toast'
@@ -30,7 +30,7 @@ export default function Navbar() {
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
-                <h1 className='font-bold'>My Drive.</h1>
+                <h1 className='font-bold'>Memories.</h1>
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -64,7 +64,12 @@ export default function Navbar() {
                   <span className="sr-only">View notifications</span>
                   
                 </button>
-
+                <button className='flex mr-6 border-2 border-blue-500 bg-blue-500 p-2 rounded-lg'>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+</svg>
+<span className='font-bold ml-2'>Create a Memory</span>
+</button>
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
