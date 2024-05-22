@@ -14,6 +14,9 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:[true,"Password is a mandatory field!"],
     },
+    profilePic:{
+        type:String
+    },
     verifyOtp:{
         type:Number,
         required:true
