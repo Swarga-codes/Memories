@@ -13,7 +13,7 @@ const fileSchema=new mongoose.Schema({
         type:ObjectId,
         ref:'USER'
     },
-    memoryName:{
+    memoryId:{
         type:ObjectId,
         ref:'MEMORY'
     }

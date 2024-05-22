@@ -11,7 +11,7 @@ export async function GET(req:NextRequest) {
     await connectDb();
     const isExistingUser=await USER.findOne({email:email})
     if(!isExistingUser) return NextResponse.json({success:false,message:'User not found!'},{status:404})
-    const getMemories=await MEMORY.find({createdBy:isExistingUser._id})
+    const getMemories=await MEMORY.find({ $or:[  {createdBy:isExistingUser._id},{memoryParticipants:isExistingUser._id}]})
     return NextResponse.json({success:true,message:'Fetched user memories',memories:getMemories},{status:200})
     }
 catch(err){

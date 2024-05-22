@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import Navbar from "./ui/Navbar";
 import MemoryCard from "./ui/MemoryCard";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const [memories,setMemories]=useState([])
@@ -26,8 +27,8 @@ fetchMemories();
     <>
     <div className="flex flex-wrap">
    {
-    memories?.map((memory,idx)=>(
-      <MemoryCard key={idx} memory={memory}/>
+    memories?.map((memory)=>(
+      <Link href={`/memories/${memory._id}`}><MemoryCard key={memory._id} memory={memory}/></Link>
     ))
    }
 </div>
