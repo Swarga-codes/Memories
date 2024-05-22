@@ -70,7 +70,6 @@ function Page() {
     } else {
       toast.error(data.message);
     }
-    console.log(data);
   };
 
   return (

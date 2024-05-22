@@ -26,14 +26,14 @@ async function registerUser(){
     toast.success(data.message)
     router.push('/verifyOtp')
     }
-    else if(data.error){
-      toast.error(data.error.issues[0].message)
+    else if(data.validation){
+      toast.error(data.validation.error.issues.map((issue:any)=>issue.message).join(', '))
     }
+    
     else{
       toast.error(data.message)
     }
     setLoading(false)
-    console.log(data)
 }
   return (
     <section>
