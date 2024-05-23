@@ -9,6 +9,7 @@ function Page({params:{memoryId}}) {
   const [coverPicUrl,setCoverPicUrl]=useState("")
   const [memoryParticipants,setMemoryParticipants]=useState([])
   const [search,setSearch]=useState("")
+  const [searchResults,setSearchResults]=useState([])
   const [memoryData,setMemoryData]=useState()
   async function fetchMemoryDetails(){
     const response=await fetch(`/api/memories/id/${memoryId}`);
@@ -24,10 +25,24 @@ function Page({params:{memoryId}}) {
     }
   
   }
-  
+  async function fetchUsersBasedOnSearchQuery() {
+    const response=await fetch(`/api/users/${search}`)
+    const data=await response.json()
+    if(data.success){
+    setSearchResults(data.users)
+    }
+    else{
+      toast.error(data.message)
+    }
+  }
   useEffect(()=>{
     fetchMemoryDetails()
   },[]) 
+  useEffect(()=>{
+    if(search){
+fetchUsersBasedOnSearchQuery()
+    }
+  },[search])
   return (
     <div className='p-10'>
       <h1 className='text-2xl font-bold'>{memoryData?.title} Settings</h1>
@@ -106,6 +121,22 @@ function Page({params:{memoryId}}) {
         value={search}
         onChange={(e)=>setSearch(e.target.value)}
       ></input>
+     {search && searchResults.length>0 &&
+      <div className='p-4 border-2 border-white mt-2 rounded-xl'>
+       {searchResults?.map((result:any)=>(
+        <div key={result?._id}>
+        <p className='text-md font-bold'>{result?.username}</p>
+        <p className='text-sm'>{result?.email}</p>
+        </div>
+       )) 
+       }
+      </div>
+      }
+      {search && searchResults.length===0 && <div className='p-4 border-2 border-white mt-2 rounded-xl'>
+        <div>
+        <p className='text-md font-bold'>No user found.</p>
+        </div>
+      </div>}
     </div>
     <button className='mt-10 bg-blue-500 p-2 rounded-md'>Update Details</button>
       </form>
