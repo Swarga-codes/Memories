@@ -14,11 +14,11 @@ export async function GET(req:NextRequest){
         if(!isExistingUser) return NextResponse.json({success:false,message:'User not found!'},{status:404})
         const splitUrl=req.url.split('/')
         const memoryId=splitUrl[splitUrl.length-1];
-        const isValidMemory= await MEMORY.findOne({_id:memoryId})
+        const isValidMemory= await MEMORY.findOne({_id:memoryId}).populate('createdBy')
         if(!isValidMemory) return NextResponse.json({success:false,message:'Memory not found!'},{status:404})
         if((!isValidMemory.createdBy.equals(isExistingUser._id)) && (!isValidMemory.memoryParticipants.includes(isExistingUser._id))) return NextResponse.json({success:false,message:'User not allowed to access this memory!'},{status:403})
         const getMemoryImages=await FILE.find({memoryId:memoryId})
-    return NextResponse.json({success:true,message:'Successfully fetched memory data!',images:getMemoryImages},{status:200})
+    return NextResponse.json({success:true,message:'Successfully fetched memory data!',images:getMemoryImages, memory:isValidMemory},{status:200})
     } catch (error) {
         console.log(error)
         return NextResponse.json({success:false,message:'Could not fetch memory data!'},{status:500})

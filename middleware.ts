@@ -16,5 +16,5 @@ catch(err){
 }
 
 export const config={
-    matcher:['/','/login','/register','/verifyOtp']
+    matcher:['/','/login','/register','/verifyOtp','/memories/:memoryId*']
 }
