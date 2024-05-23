@@ -8,9 +8,13 @@ export async function GET(req:NextRequest) {
         if (!decodedToken.success) return NextResponse.json(decodedToken, { status: 401 });
         const email = decodedToken?.email;
         await connectDb();
-        const getUsers=await USER.find({isVerified:true}).select('-password -verifyOtp -verifyOtpExpiry')
-        const filterTheRequestedUser=getUsers.filter(user=>user.email!==email)
-        return NextResponse.json({success:true,message:'Fetched users successfully',users:filterTheRequestedUser},{status:200})
+        const splitUrl=req.url.split('/')
+        const searchQuery=splitUrl[splitUrl.length-1];
+        const getUsers=await USER.find({isVerified:true,email:{$ne:email}, $or:[
+            {username:{$regex:searchQuery,$options:'i'}},
+            {email:{$regex:searchQuery,$options:'i'}}
+        ]}).select('-password -verifyOtp -verifyOtpExpiry')
+        return NextResponse.json({success:true,message:'Fetched users successfully',users:getUsers},{status:200})
     } catch (error) {
         console.log(error)
         return NextResponse.json({success:false,message:'Could not fetch users, try again!'},{status:500})
