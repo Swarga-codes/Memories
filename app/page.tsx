@@ -6,10 +6,9 @@ import Navbar from "./ui/Navbar";
 import MemoryCard from "./ui/MemoryCard";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const router=useRouter()
+  
   const [memories,setMemories]=useState([])
   async function fetchMemories(){
     const response=await fetch('/api/memories/getUserMemories')
@@ -17,10 +16,6 @@ export default function Home() {
     if(data.success){
 toast.success(data.message)
 setMemories(data.memories)
-    }
-    else if(response.status===401){
-      router.push('/login')
-      toast.error(data.message)
     }
     else{
       toast.error(data.message)

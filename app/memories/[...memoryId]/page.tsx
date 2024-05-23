@@ -5,6 +5,7 @@ import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
 import UploadImagesDialog from '@/app/ui/UploadImagesDialog'
+
 function Page({params:{memoryId}}) {
 
    const [open, setOpen] = useState(false)
@@ -19,6 +20,29 @@ async function fetchMemoryImages(){
     toast.error(data.message)
   }
 } 
+async function downloadFile(fileName,fileUrl){
+  try {
+    const response = await fetch(fileUrl)
+    const blob = await response.blob()
+    
+    const url = URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = url
+    link.download = fileName
+
+    document.body.appendChild(link)
+
+    link.click()
+
+    document.body.removeChild(link)
+
+    URL.revokeObjectURL(url)
+  } catch (error) {
+    console.error('Error downloading the image:', error)
+    toast.error('Failed to download image')
+  }
+}
 useEffect(()=>{
 fetchMemoryImages()
 },[])
@@ -45,9 +69,18 @@ fetchMemoryImages()
      {images?.map(image=>(
       <div key={image?._id} className='m-2 border-2 border-white rounded-md p-2'>
   <Image src={image?.fileUrl} alt={image?.fileName} height={200} width={400}/>
+  <div className='flex'>
+    <div>
   <p className='p-2'>{image?.fileName}</p>
   <p className='p-2'>Uploaded on {image?.createdAt.substring(0,10)}</p>
- 
+  </div>
+  <div className='ml-auto m-4 cursor-pointer' onClick={()=>downloadFile(image?.fileName,image?.fileUrl)}>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+</svg>
+
+  </div>
+  </div>
   </div>
      ))
 

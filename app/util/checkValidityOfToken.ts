@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import jsonwebtoken from 'jsonwebtoken'
+import { cookies } from "next/headers";
 export const checkValidityOfToken = (req:NextRequest)=>{
     try{
     let token= req.cookies.get('token')?.value || ""
@@ -11,6 +12,7 @@ export const checkValidityOfToken = (req:NextRequest)=>{
     }
 catch(err:any){
     console.log("Error:  ",err)
+    cookies().delete('token')
     return {success:false,message:'Unauthorized'}
 }
 }

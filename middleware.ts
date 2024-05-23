@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import jsonwebtoken from 'jsonwebtoken'
+import { cookies } from "next/headers";
 export function middleware(request:NextRequest){
     try{
    let path=request.nextUrl.pathname
@@ -10,7 +11,7 @@ export function middleware(request:NextRequest){
    }
 catch(err){
     console.log(err)
- return NextResponse.redirect(new URL('/login',request.nextUrl))
+    cookies().delete('token')
 }
 }
 
