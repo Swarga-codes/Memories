@@ -16,7 +16,7 @@ export async function GET(req:NextRequest){
         const memoryId=splitUrl[splitUrl.length-1];
         const isValidMemory= await MEMORY.findOne({_id:memoryId})
         if(!isValidMemory) return NextResponse.json({success:false,message:'Memory not found!'},{status:404})
-        if((isValidMemory.createdBy!==isExistingUser._id) && (!isValidMemory.memoryParticipants.includes(isExistingUser._id))) return NextResponse.json({success:false,message:'User not allowed to access this memory!'},{status:403})
+        if((!isValidMemory.createdBy.equals(isExistingUser._id)) && (!isValidMemory.memoryParticipants.includes(isExistingUser._id))) return NextResponse.json({success:false,message:'User not allowed to access this memory!'},{status:403})
         const getMemoryImages=await FILE.find({memoryId:memoryId})
     return NextResponse.json({success:true,message:'Successfully fetched memory data!',images:getMemoryImages},{status:200})
     } catch (error) {

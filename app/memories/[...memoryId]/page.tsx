@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
@@ -8,8 +8,20 @@ import UploadImagesDialog from '@/app/ui/UploadImagesDialog'
 function Page({params:{memoryId}}) {
 
    const [open, setOpen] = useState(false)
-
-
+   const [images,setImages]=useState([])
+async function fetchMemoryImages(){
+  const response=await fetch(`/api/memories/id/${memoryId}`);
+  const data=await response.json()
+  if(data.success){
+    setImages(data.images)
+  }
+  else{
+    toast.error(data.message)
+  }
+} 
+useEffect(()=>{
+fetchMemoryImages()
+},[])
   return (
     <>
     <div className='p-10'>
@@ -25,11 +37,24 @@ function Page({params:{memoryId}}) {
     
       
         </div>
-        <p>Created By Markus on </p>
+        {/* <p>Created By {} on </p> */}
         <div>
     
         </div>
+        <div className='mt-6 flex flex-wrap'>
+     {images?.map(image=>(
+      <div key={image?._id} className='m-2 border-2 border-white rounded-md p-2'>
+  <Image src={image?.fileUrl} alt={image?.fileName} height={200} width={400}/>
+  <p className='p-2'>{image?.fileName}</p>
+  <p className='p-2'>Uploaded on {image?.createdAt.substring(0,10)}</p>
+ 
+  </div>
+     ))
+
+     }
+     </div>
     </div>
+   
     <UploadImagesDialog open={open} setOpen={setOpen} memoryId={memoryId}/>
     </>
   )

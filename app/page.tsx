@@ -18,10 +18,10 @@ export default function Home() {
 toast.success(data.message)
 setMemories(data.memories)
     }
-    // else if(data.message==='Unauthorized'){
-    //   router.push('/login')
-    //   toast.error(data.message)
-    // }
+    else if(response.status===401){
+      router.push('/login')
+      toast.error(data.message)
+    }
     else{
       toast.error(data.message)
     }
