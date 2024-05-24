@@ -44,7 +44,7 @@ export async function PUT(req: NextRequest) {
     existingUser.isVerified = true;
     await existingUser.save();
 
-    return NextResponse.json({ success: true, message: 'User verified successfully!', email: existingUser.email, username: existingUser.username }, { status: 200 });
+    return NextResponse.json({ success: true, message: 'User verified successfully!', email: existingUser.email, username: existingUser.username,id:existingUser._id }, { status: 200 });
 
   } catch (err) {
     console.log(err);

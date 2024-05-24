@@ -22,6 +22,9 @@ export default function Page() {
     const data=await response.json()
     if(data.success){
       toast.success(data.message)
+      localStorage.setItem('userId',data.id)
+      localStorage.setItem('email',data.email)
+      localStorage.setItem('username',data.username)
       router.push('/')
     }
     else{

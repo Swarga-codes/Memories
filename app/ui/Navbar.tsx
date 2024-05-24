@@ -5,7 +5,6 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { useRouter } from "next/navigation";
 import toast from 'react-hot-toast'
-import CreateMemoryDialog from './CreateMemoryDialog'
 import Link from 'next/link'
 function classNames(...classes:string[]) {
   return classes.filter(Boolean).join(' ')
@@ -14,8 +13,6 @@ function classNames(...classes:string[]) {
 
 export default function Navbar() {
     const router=useRouter()
-    const [imageUrl,setImageUrl]=useState([])
-    const [open, setOpen] = useState(false)
     
   async function logout(){
     const response=await fetch('/api/auth/logout',{
@@ -74,12 +71,7 @@ export default function Navbar() {
                   
                 </button>
               
-                <button className='flex mr-6 border-2 border-blue-500 bg-blue-500 p-2 rounded-lg'>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-<path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-</svg>
-<span className='font-bold ml-2' onClick={()=>setOpen(true)}>Create a Memory</span>
-</button>        
+                       
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
@@ -151,7 +143,6 @@ export default function Navbar() {
         </>
       )}
     </Disclosure>
-    <CreateMemoryDialog open={open} setOpen={setOpen}/>
     </>
   )
 }

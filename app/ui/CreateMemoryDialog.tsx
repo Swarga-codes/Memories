@@ -5,7 +5,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { CldUploadWidget } from 'next-cloudinary'
 import toast from 'react-hot-toast'
 import Image from 'next/image'
-export default function CreateMemoryDialog({open,setOpen}:any) {
+export default function CreateMemoryDialog({open,setOpen,fetchMemories}:any) {
   const [title,setTitle]=useState('')
   const [description,setDescription]=useState('')
   const [coverPicUrl,setCoverPicUrl]=useState('')  
@@ -27,6 +27,10 @@ async function createMemory(){
     const data=await response.json()
     if(data.success){
         toast.success(data.message)
+        fetchMemories()
+        setTitle('')
+        setDescription('')
+        setCoverPicUrl('')
         setOpen(false)
     }
     else{

@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
-export default function UploadImagesDialog({open,setOpen,memoryId}:any) {
+export default function UploadImagesDialog({open,setOpen,memoryId,fetchMemoryImages}:any) {
  
     const [imageUrls,setImageUrls]=useState([])
   const cancelButtonRef = useRef(null)
@@ -21,6 +21,7 @@ export default function UploadImagesDialog({open,setOpen,memoryId}:any) {
     const data=await response.json()
     if(data.success){
         toast.success(data.message)
+        fetchMemoryImages()
         setOpen(false)
     }
     else{

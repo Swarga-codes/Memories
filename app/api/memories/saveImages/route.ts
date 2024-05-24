@@ -14,8 +14,9 @@ export async function POST(req:NextRequest){
         if(!isExistingUser) return NextResponse.json({success:false,message:'User not found!'},{status:404})
         const {imageData,memoryId}=await req.json()
         if(imageData.length===0) return NextResponse.json({success:false,message:'No images to upload!'},{status:422})
-        const isValidMemory=await MEMORY.findOne({_id:memoryId,createdBy:isExistingUser._id})
-        if(!isValidMemory) return NextResponse.json({success:false,message:'Memory not found or make sure user have access to this memory!'},{status:404})
+        const isValidMemory=await MEMORY.findOne({_id:memoryId})
+        if(!isValidMemory) return NextResponse.json({success:false,message:'Memory not found!'},{status:404})
+        if(!isValidMemory.memoryParticipants.includes(isExistingUser?._id.toString())) return NextResponse.json({success:false,message:'You do not have permission to modify this memory!'},{status:403})
         for(let i=0;i<imageData.length;i++){
     const image=new FILE({
         fileName:imageData[i].fileName,

@@ -5,7 +5,7 @@ export default function MemoryCard({memory}) {
   return (
     <div className="relative h-[400px] w-[360px] rounded-md my-4 mx-2 cursor-pointer">
       <Image
-      src={memory?.memoryCoverPic}
+      src={memory?.memoryCoverPic?memory?.memoryCoverPic:"https://images.unsplash.com/photo-1608085575931-d0bd0aacd0d1?q=80&w=1891&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
         alt={memory?.title}
         className="z-0 h-full w-full rounded-md object-cover"
         height={200}

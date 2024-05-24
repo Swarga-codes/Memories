@@ -70,6 +70,7 @@ function Page({params:{memoryId}}) {
 fetchUsersBasedOnSearchQuery()
     }
   },[search])
+
   return (
     <div className='p-10'>
       <h1 className='text-2xl font-bold'>{memoryData?.title} Settings</h1>
