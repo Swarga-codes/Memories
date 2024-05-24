@@ -14,9 +14,10 @@ export async function GET(req:NextRequest){
         if(!isExistingUser) return NextResponse.json({success:false,message:'User not found!'},{status:404})
         const splitUrl=req.url.split('/')
         const memoryId=splitUrl[splitUrl.length-1];
-        const isValidMemory= await MEMORY.findOne({_id:memoryId}).populate('createdBy')
+        const isValidMemory= await MEMORY.findOne({_id:memoryId}).populate('createdBy').populate({path:'memoryParticipants',select:'-password -verifyOtp -verifyOtpExpiry'})
         if(!isValidMemory) return NextResponse.json({success:false,message:'Memory not found!'},{status:404})
-        if((!isValidMemory.createdBy.equals(isExistingUser._id)) && (!isValidMemory.memoryParticipants.includes(isExistingUser._id))) return NextResponse.json({success:false,message:'User not allowed to access this memory!'},{status:403})
+        const memoryParticipantsId=isValidMemory.memoryParticipants.map(participant=>participant._id.toString())
+        if(!memoryParticipantsId.includes(isExistingUser._id.toString())) return NextResponse.json({success:false,message:'User not allowed to access this memory!'},{status:403})
         const getMemoryImages=await FILE.find({memoryId:memoryId})
     return NextResponse.json({success:true,message:'Successfully fetched memory data!',images:getMemoryImages, memory:isValidMemory},{status:200})
     } catch (error) {

@@ -14,7 +14,6 @@ export default function Home() {
     const response=await fetch('/api/memories/getUserMemories')
     const data=await response.json()
     if(data.success){
-toast.success(data.message)
 setMemories(data.memories)
     }
     else{

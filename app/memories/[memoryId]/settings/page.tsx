@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 function Page({params:{memoryId}}) {
+  const router=useRouter()
   const [title,setTitle]=useState("")
   const [description,setDescription]=useState("")
   const [coverPicUrl,setCoverPicUrl]=useState("")
@@ -19,17 +21,42 @@ function Page({params:{memoryId}}) {
       setTitle(data?.memory?.title)
       setDescription(data?.memory?.description)
       setCoverPicUrl(data?.memory?.memoryCoverPic)
+     setMemoryParticipants(data?.memory?.memoryParticipants)
     }
     else{
       toast.error(data.message)
     }
-  
   }
   async function fetchUsersBasedOnSearchQuery() {
     const response=await fetch(`/api/users/${search}`)
     const data=await response.json()
     if(data.success){
     setSearchResults(data.users)
+    }
+    else{
+      toast.error(data.message)
+    }
+  }
+  async function updateMemoryDetails(){
+    let memoryParticipantsId=memoryParticipants.map(participant=>participant._id)
+    const response=await fetch('/api/memories/updateMemories',{
+      method:'PUT',
+      headers:{
+        'Content-Type':'application/json',
+      },
+      body:JSON.stringify({
+        title,
+        description,
+        memoryCoverPic:coverPicUrl,
+        memoryParticipants:memoryParticipantsId,
+        memoryId
+      })
+
+    })
+    const data=await response.json()
+    if(data.success){
+      toast.success(data.message)
+      router.push('/')
     }
     else{
       toast.error(data.message)
@@ -47,7 +74,10 @@ fetchUsersBasedOnSearchQuery()
     <div className='p-10'>
       <h1 className='text-2xl font-bold'>{memoryData?.title} Settings</h1>
       <p className='italic'>Note: The details won't be updated unless you click the update details button!</p>
-      <form>
+      <form onSubmit={(e)=>{
+        e.preventDefault()
+        updateMemoryDetails()
+      }}>
       <div className='w-1/3 mt-4'>
       <label
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -124,7 +154,16 @@ fetchUsersBasedOnSearchQuery()
      {search && searchResults.length>0 &&
       <div className='p-4 border-2 border-white mt-2 rounded-xl'>
        {searchResults?.map((result:any)=>(
-        <div key={result?._id}>
+        <div key={result?._id} onClick={()=>{
+          let memoryParticipantsId=memoryParticipants.map(participant=>participant._id)
+          if(memoryParticipantsId.includes(result?._id)){
+            toast.error('Participant already exists!')
+            return
+          }
+          else{
+            setMemoryParticipants([...memoryParticipants,result])
+          }
+        }}>
         <p className='text-md font-bold'>{result?.username}</p>
         <p className='text-sm'>{result?.email}</p>
         </div>
@@ -137,8 +176,25 @@ fetchUsersBasedOnSearchQuery()
         <p className='text-md font-bold'>No user found.</p>
         </div>
       </div>}
+      <div className='flex flex-wrap mt-4'>
+     {memoryParticipants?.map(participant=>(
+      <div className='bg-blue-500 flex p-2 rounded-md ml-2' key={participant?._id}>
+        <p>{participant?.username}</p>
+      {memoryData?.createdBy?._id===participant?._id?
+<span className='font-bold'> (Author)</span>
+      :
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 ml-2" onClick={()=>{
+          let removedMemoryParticipant=memoryParticipants.filter(memoryParticipant=>memoryParticipant._id!==participant._id)
+          setMemoryParticipants([...removedMemoryParticipant])
+        }}>
+  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>}
+   
+     
+      </div>  )) }
+      </div>
     </div>
-    <button className='mt-10 bg-blue-500 p-2 rounded-md'>Update Details</button>
+    <button type='submit' className='mt-10 bg-blue-500 p-2 rounded-md'>Update Details</button>
       </form>
     </div>
   )
