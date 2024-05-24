@@ -62,6 +62,22 @@ function Page({params:{memoryId}}) {
       toast.error(data.message)
     }
   }
+  async function deleteMemory(){
+    const response=await fetch(`/api/memories/deleteMemories/${memoryId}`,{
+      method:'DELETE',
+      headers:{
+        'Content-Type':'application/json'
+      }
+    })
+    const data=await response.json()
+    if(data.success){
+      toast.success(data.message)
+      router.push('/')
+    }
+    else{
+      toast.error(data.message)
+    }
+  }
   useEffect(()=>{
     fetchMemoryDetails()
   },[]) 
@@ -195,7 +211,12 @@ fetchUsersBasedOnSearchQuery()
       </div>  )) }
       </div>
     </div>
-    <button type='submit' className='mt-10 bg-blue-500 p-2 rounded-md'>Update Details</button>
+    <button type='button' className='mt-10 bg-red-500 p-2 rounded-md' onClick={()=>{
+      if(window.confirm('Do you really wanna delete this memory?')){
+        deleteMemory()
+      }
+    }}>Delete Memory</button>
+    <button type='submit' className='mt-10 ml-4 bg-blue-500 p-2 rounded-md'>Update Details</button>
       </form>
     </div>
   )
