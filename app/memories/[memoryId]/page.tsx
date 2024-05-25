@@ -13,6 +13,7 @@ function Page({params:{memoryId}}) {
    const [images,setImages]=useState([])
    const [memoryData,setMemoryData]=useState()
    const [userId,setUserId]=useState("")
+   const [loading,setLoading]=useState(false)
 async function fetchMemoryImages(){
   const response=await fetch(`/api/memories/id/${memoryId}`);
   const data=await response.json()
@@ -23,7 +24,7 @@ async function fetchMemoryImages(){
   else{
     toast.error(data.message)
   }
-
+setLoading(false)
 } 
 async function downloadFile(fileName:string,fileUrl:string){
   try {
@@ -87,6 +88,7 @@ else{
 }
 }
 useEffect(()=>{
+  setLoading(true)
 fetchMemoryImages()
 },[])
 useEffect(()=>{
@@ -96,7 +98,11 @@ if(typeof localStorage!=undefined){
 },[])
   return (
     <>
-    <div className='p-10'>
+    {loading?
+  <h1 className="p-10 text-bold">Loading data....</h1>
+  :
+  <>
+ <div className='p-10'>
         <div className='flex'>
         <h1 className='text-2xl font-bold'>{memoryData?.title}</h1>
         <button className='flex p-2 bg-pink-600 rounded-md ml-auto' onClick={() => setOpen(true)}>
@@ -161,6 +167,9 @@ if(typeof localStorage!=undefined){
      }
      </div>
     </div>
+    </>
+  }
+   
    
     <UploadImagesDialog open={open} setOpen={setOpen} memoryId={memoryId} fetchMemoryImages={fetchMemoryImages}/>
     </>
