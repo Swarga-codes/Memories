@@ -28,7 +28,7 @@ fetchMemories();
   },[])
   useEffect(()=>{
     if(typeof localStorage!==undefined){
-setUserName(localStorage.getItem('username'))
+setUserName(localStorage.getItem('username') || "")
     }
   },[])
   return (

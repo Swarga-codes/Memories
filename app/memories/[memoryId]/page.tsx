@@ -1,11 +1,12 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
 import UploadImagesDialog from '@/app/ui/UploadImagesDialog'
 import Link from 'next/link'
+import JSZip from 'jszip'
+import {saveAs} from 'file-saver';
 function Page({params:{memoryId}}) {
 
    const [open, setOpen] = useState(false)
@@ -62,6 +63,29 @@ async function deleteImage(imageId:string) {
     toast.error(data.message)
   }
 }
+async function handleFullAlbumDownload(){
+const zip=new JSZip()
+const createFolder=zip.folder(`${memoryData?.title}_images`)
+for(let i=0;i<images.length;i++){
+  try{
+    const response=await fetch(images[i]?.fileUrl)
+    const blob=await response.blob()
+    const fileType=blob.type || 'image/jpeg'
+    createFolder?.file(`${images[i]?.fileName}.${fileType.split('/')[1]}`,blob,{binary:true,type: 'image/png'})
+  }
+  catch(err){
+    console.log(err)
+    toast.error('Error fetching Image...')
+  }
+}
+const saveFile=await zip.generateAsync({type:'blob'})
+if(saveFile){
+  saveAs(saveFile,`${memoryData?.title}_images.zip`)
+}
+else{
+  toast.error('Could not download file, try again!')
+}
+}
 useEffect(()=>{
 fetchMemoryImages()
 },[])
@@ -94,6 +118,17 @@ if(typeof localStorage!=undefined){
         </div>
      <p>Created by {memoryData?.createdBy?.username} on {memoryData?.createdAt?.substring(0,10)}</p>
      <p className='font-bold italic'>"{memoryData?.description}"</p>
+     <button className='flex p-2 bg-green-600 rounded-md mt-4' onClick={()=>{
+      if(window.confirm(`Do you really want to download the memory ${memoryData?.title} as zip?`)){
+        handleFullAlbumDownload()
+      }
+     }}>
+       
+     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+</svg>
+                   <span className='ml-2'>Download memory as Zip</span>
+               </button>
         <div>
     
         </div>
