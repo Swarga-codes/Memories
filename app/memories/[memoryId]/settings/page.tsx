@@ -89,8 +89,18 @@ fetchUsersBasedOnSearchQuery()
 
   return (
     <div className='p-10'>
+      <div className='flex items-center'>
+        <div className='cursor-pointer' onClick={()=>router.push(`/memories/${memoryId}`)}>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+</svg>
+
+        </div>
+        <div className='ml-4'>
       <h1 className='text-2xl font-bold'>{memoryData?.title} Settings</h1>
       <p className='italic'>Note: The details won't be updated unless you click the update details button!</p>
+      </div>
+      </div>
       <form onSubmit={(e)=>{
         e.preventDefault()
         updateMemoryDetails()

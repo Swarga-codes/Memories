@@ -7,8 +7,8 @@ import Navbar from "./ui/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "My Drive.",
-  description: "Full stack authentication system built using Next.js 14.",
+  title: "Memories.",
+  description: "An Album for organizing & storing all your memories.",
 };
 
 export default function RootLayout({
