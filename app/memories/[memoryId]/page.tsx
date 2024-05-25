@@ -7,11 +7,12 @@ import UploadImagesDialog from '@/app/ui/UploadImagesDialog'
 import Link from 'next/link'
 import JSZip from 'jszip'
 import {saveAs} from 'file-saver';
-function Page({params:{memoryId}}) {
+import { MEMORY, ParamsProps,FILE } from '@/app/util/types'
+function Page({params:{memoryId}}:ParamsProps) {
 
    const [open, setOpen] = useState(false)
-   const [images,setImages]=useState([])
-   const [memoryData,setMemoryData]=useState()
+   const [images,setImages]=useState<FILE[]>([])
+   const [memoryData,setMemoryData]=useState<MEMORY>()
    const [userId,setUserId]=useState("")
    const [loading,setLoading]=useState(false)
 async function fetchMemoryImages(){
@@ -72,7 +73,7 @@ for(let i=0;i<images.length;i++){
     const response=await fetch(images[i]?.fileUrl)
     const blob=await response.blob()
     const fileType=blob.type || 'image/jpeg'
-    createFolder?.file(`${images[i]?.fileName}.${fileType.split('/')[1]}`,blob,{binary:true,type: fileType})
+    createFolder?.file(`${images[i]?.fileName}.${fileType.split('/')[1]}`,blob)
   }
   catch(err){
     console.log(err)
@@ -93,7 +94,7 @@ fetchMemoryImages()
 },[])
 useEffect(()=>{
 if(typeof localStorage!=undefined){
-  setUserId(localStorage.getItem('userId'))
+  setUserId(localStorage.getItem('userId') || "")
 }
 },[])
   return (
@@ -122,8 +123,8 @@ if(typeof localStorage!=undefined){
 </Link>
 </button> } 
         </div>
-     <p>Created by {memoryData?.createdBy?.username} on {memoryData?.createdAt?.substring(0,10)}</p>
-     <p className='font-bold italic'>"{memoryData?.description}"</p>
+     <p>Created by {memoryData?.createdBy?.username} on {memoryData?.createdAt?.toString()?.substring(0,10)}</p>
+     <p className='font-bold italic'>&quot;{memoryData?.description}&quot;</p>
      <button className='flex p-2 bg-green-600 rounded-md mt-4' onClick={()=>{
       if(window.confirm(`Do you really want to download the memory ${memoryData?.title} as zip?`)){
         handleFullAlbumDownload()
@@ -145,7 +146,7 @@ if(typeof localStorage!=undefined){
   <div className='flex'>
     <div>
   <p className='p-2'>{image?.fileName}</p>
-  <p className='p-2'>Uploaded on {image?.createdAt.substring(0,10)}</p>
+  <p className='p-2'>Uploaded on {image?.createdAt.toString().substring(0,10)}</p>
   </div>
   <div className='ml-auto m-4 cursor-pointer'>
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6" onClick={()=>downloadFile(image?.fileName,image?.fileUrl)}>

@@ -54,7 +54,7 @@ function Page() {
         </div>
         <div className='ml-4'>
       <h1 className='text-2xl font-bold'>Profile Settings</h1>
-      <p className='italic'>Note: The details won't be updated unless you click the update details button!</p>
+      <p className='italic'>Note: The details won&apos;t be updated unless you click the update details button!</p>
       </div>
       </div>
       <form onSubmit={(e)=>{
@@ -101,7 +101,7 @@ function Page() {
         Upload Memory Cover Pic
       </label>
       <br />
-      <CldUploadWidget uploadPreset="memories" onSuccess={(results)=>{
+      <CldUploadWidget uploadPreset="memories" onSuccess={(results:any)=>{
         setProfilePic(results?.info?.secure_url)
       }}>
   {({ open,isLoading }) => {
