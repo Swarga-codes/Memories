@@ -6,14 +6,17 @@ import Image from 'next/image'
 import { useRouter } from "next/navigation";
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 function classNames(...classes:string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
 
 export default function Navbar() {
-    const router=useRouter()
-    const [profilePic,setProfilePic]=useState("")
+  const router=useRouter()
+  const [profilePic,setProfilePic]=useState("")
+  const pathname=usePathname()
+  const publicRoutes=['/login','/register','/verifyOtp','/forgotPassword']
     async function fetchUserData() {
       const response=await fetch('/api/users/getUserData')
       const data=await response.json()
@@ -38,8 +41,13 @@ export default function Navbar() {
     }
   }
   useEffect(()=>{
+  if(!publicRoutes.includes(pathname)){
     fetchUserData()
+  }
   },[])
+  if(publicRoutes.includes(pathname)){
+    return
+  }
   return (
     <>
     <Disclosure as="nav" className="bg-gray-800">
@@ -47,8 +55,11 @@ export default function Navbar() {
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
-              <Link href={'/'}>
-                <h1 className='font-bold'>Memories.</h1>
+            <Link href={'/'}>
+              <div className='flex items-center'>
+                <Image src={'https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-memories-history-flaticons-lineal-color-flat-icons.png'} alt='memoryIcon' height={32} width={32}/>
+                <h1 className='font-bold ml-2'>Memories.</h1>
+                </div>
                 </Link>
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
