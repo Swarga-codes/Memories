@@ -4,16 +4,16 @@ import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
-import { MEMORY, ParamsProps, USER } from '@/app/util/types'
+import { Memory, ParamsProps, User } from '@/app/util/types'
 function Page({params:{memoryId}}:ParamsProps) {
   const router=useRouter()
   const [title,setTitle]=useState("")
   const [description,setDescription]=useState("")
   const [coverPicUrl,setCoverPicUrl]=useState("")
-  const [memoryParticipants,setMemoryParticipants]=useState<USER[]>([])
+  const [memoryParticipants,setMemoryParticipants]=useState<User[]>([])
   const [search,setSearch]=useState("")
   const [searchResults,setSearchResults]=useState([])
-  const [memoryData,setMemoryData]=useState<MEMORY>()
+  const [memoryData,setMemoryData]=useState<Memory>()
   async function fetchMemoryDetails(){
     const response=await fetch(`/api/memories/id/${memoryId}`);
     const data=await response.json()
@@ -39,7 +39,7 @@ function Page({params:{memoryId}}:ParamsProps) {
     }
   }
   async function updateMemoryDetails(){
-    let memoryParticipantsId=memoryParticipants.map((participant:USER)=>participant._id)
+    let memoryParticipantsId=memoryParticipants.map((participant:User)=>participant._id)
     const response=await fetch('/api/memories/updateMemories',{
       method:'PUT',
       headers:{
@@ -183,7 +183,7 @@ fetchUsersBasedOnSearchQuery()
       <div className='p-4 border-2 border-white mt-2 rounded-xl'>
        {searchResults?.map((result:any)=>(
         <div key={result?._id} onClick={()=>{
-          let memoryParticipantsId=memoryParticipants.map((participant:USER)=>participant._id)
+          let memoryParticipantsId=memoryParticipants.map((participant:User)=>participant._id)
           if(memoryParticipantsId.includes(result?._id)){
             toast.error('Participant already exists!')
             return
@@ -205,7 +205,7 @@ fetchUsersBasedOnSearchQuery()
         </div>
       </div>}
       <div className='flex flex-wrap mt-4'>
-     {memoryParticipants?.map((participant:USER)=>(
+     {memoryParticipants?.map((participant:User)=>(
       <div className='bg-blue-500 flex p-2 rounded-md ml-2' key={participant?._id}>
         <p>{participant?.username}</p>
       {memoryData?.createdBy?._id===participant?._id?

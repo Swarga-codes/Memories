@@ -1,7 +1,11 @@
+'use client'
 import Image from 'next/image'
 import React from 'react'
-
-export default function MemoryCard({memory}) {
+import { Memory } from '../util/types'
+interface MemoryCardProps{
+  memory:Memory
+}
+export default function MemoryCard({memory}:MemoryCardProps) {
   return (
     <div className="relative h-[400px] w-[360px] rounded-md my-4 mx-2 cursor-pointer">
       <Image
@@ -18,7 +22,7 @@ export default function MemoryCard({memory}) {
          {memory?.description}
         </p>
         <p className="mt-2 text-sm text-gray-300">
-         {memory?.createdAt.substring(0,10)}
+         {memory?.createdAt?.toString().substring(0,10)}
         </p>
         <button className="mt-2 inline-flex cursor-pointer items-center text-sm font-semibold text-white">
           Relive Memory &rarr;

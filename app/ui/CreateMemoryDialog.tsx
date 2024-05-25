@@ -1,7 +1,6 @@
 'use client'
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { CldUploadWidget } from 'next-cloudinary'
 import toast from 'react-hot-toast'
 import Image from 'next/image'
@@ -110,7 +109,7 @@ async function createMemory(){
         Upload Memory Cover Pic
       </label>
       <br />
-      <CldUploadWidget uploadPreset="memories" onSuccess={(results)=>{
+      <CldUploadWidget uploadPreset="memories" onSuccess={(results:any)=>{
         setCoverPicUrl(results?.info?.secure_url)
       }}>
   {({ open,isLoading }) => {

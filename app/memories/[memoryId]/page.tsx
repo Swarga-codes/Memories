@@ -7,12 +7,12 @@ import UploadImagesDialog from '@/app/ui/UploadImagesDialog'
 import Link from 'next/link'
 import JSZip from 'jszip'
 import {saveAs} from 'file-saver';
-import { MEMORY, ParamsProps,FILE } from '@/app/util/types'
+import { Memory, ParamsProps,File } from '@/app/util/types'
 function Page({params:{memoryId}}:ParamsProps) {
 
    const [open, setOpen] = useState(false)
-   const [images,setImages]=useState<FILE[]>([])
-   const [memoryData,setMemoryData]=useState<MEMORY>()
+   const [images,setImages]=useState<File[]>([])
+   const [memoryData,setMemoryData]=useState<Memory>()
    const [userId,setUserId]=useState("")
    const [loading,setLoading]=useState(false)
 async function fetchMemoryImages(){

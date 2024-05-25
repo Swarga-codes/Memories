@@ -1,11 +1,13 @@
+'use client'
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
+import { ImageURLs } from '../util/types'
 export default function UploadImagesDialog({open,setOpen,memoryId,fetchMemoryImages}:any) {
  
-    const [imageUrls,setImageUrls]=useState([])
+    const [imageUrls,setImageUrls]=useState<ImageURLs[]>([])
   const cancelButtonRef = useRef(null)
   async function savePicturesToDB(){
     const response=await fetch('/api/memories/saveImages',{
@@ -57,8 +59,8 @@ export default function UploadImagesDialog({open,setOpen,memoryId,fetchMemoryIma
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
               <div className='p-10 text-black'>
                 <h1 className='font-bold text-xl mb-4'>Upload Image.</h1>
-              <CldUploadWidget uploadPreset="memories" onSuccess={(results)=>{
-            setImageUrls((prevImageUrl:any)=>[...prevImageUrl,{fileName:results?.info?.original_filename,fileUrl:results?.info?.secure_url}])
+              <CldUploadWidget uploadPreset="memories" onSuccess={(results:any)=>{
+            setImageUrls((prevImageUrl:ImageURLs[])=>[...prevImageUrl,{fileName:results?.info?.original_filename,fileUrl:results?.info?.secure_url}])
         }}>
   {({ open, isLoading }) => {
     return (
@@ -82,8 +84,8 @@ export default function UploadImagesDialog({open,setOpen,memoryId,fetchMemoryIma
 </CldUploadWidget>
 <div className='mt-4 flex flex-wrap'>
     {
-        imageUrls?.map(url=>(
-            <Image src={url.fileUrl} alt={url.fileName} height={200} width={140}/>
+        imageUrls?.map((url,idx)=>(
+            <Image src={url.fileUrl} alt={url.fileName} height={200} width={140} key={idx}/>
         ))
     }
 </div>

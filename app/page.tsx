@@ -7,7 +7,7 @@ import MemoryCard from "./ui/MemoryCard";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import CreateMemoryDialog from "./ui/CreateMemoryDialog";
-import { MEMORY } from "./util/types";
+import { Memory } from "./util/types";
 export default function Home() {
   
   const [memories,setMemories]=useState([])
@@ -60,7 +60,7 @@ setUserName(localStorage.getItem('username') || "")
 
 <div className="flex flex-wrap">
 {
-memories?.map((memory:MEMORY)=>(
+memories?.map((memory:Memory)=>(
 <Link href={`/memories/${memory?._id}`} key={memory?._id}><MemoryCard memory={memory}/></Link>
 ))
 }

@@ -1,4 +1,4 @@
-interface USER{
+interface User{
     username:string,
     email:string,
     password:string,
@@ -8,21 +8,21 @@ interface USER{
     isVerified:Boolean,
     _id:string
 }
-interface MEMORY{
+interface Memory{
     title:string,
     description:string,
     memoryCoverPic:string,
-    memoryParticipants: USER[],
-    createdBy:USER,
+    memoryParticipants: User[],
+    createdBy:User,
     createdAt:Date,
     _id:string
 }
 
-interface FILE{
+interface File{
     fileName:string,
     fileUrl:string,
-    createdBy:USER,
-    memoryId:MEMORY,
+    createdBy:User,
+    memoryId:Memory,
     createdAt:Date,
     _id:string
 }
@@ -33,4 +33,12 @@ interface ParamsProps{
     }
 }
 
-export type{USER,MEMORY,FILE,ParamsProps}
+interface ImageURLs{
+    fileName:string,
+    fileUrl:string
+}
+
+
+
+
+export type{User,Memory,File,ParamsProps,ImageURLs}
