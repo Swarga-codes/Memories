@@ -71,7 +71,7 @@ for(let i=0;i<images.length;i++){
     const response=await fetch(images[i]?.fileUrl)
     const blob=await response.blob()
     const fileType=blob.type || 'image/jpeg'
-    createFolder?.file(`${images[i]?.fileName}.${fileType.split('/')[1]}`,blob,{binary:true,type: 'image/png'})
+    createFolder?.file(`${images[i]?.fileName}.${fileType.split('/')[1]}`,blob,{binary:true,type: fileType})
   }
   catch(err){
     console.log(err)
