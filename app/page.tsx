@@ -41,24 +41,25 @@ setUserName(localStorage.getItem('username') || "")
   <h1 className="p-10 text-bold">Loading data....</h1>
   :
 <>
-<div className="p-10 flex">
+<div className="p-6 sm:p-10 flex">
 
 <div>
-<h1 className="text-4xl font-bold">Hello {userName}</h1>
+<h1 className="text-2xl sm:text-4xl font-bold">Hello {userName}</h1>
 <p>Below you can find your memories....</p>
 </div>
 <div className="ml-auto">
   
-<button className='flex mr-6 border-2 border-blue-500 bg-blue-500 p-2 rounded-lg'>
+<button className='flex mr-6 border-2 border-blue-500 bg-blue-500 p-2 rounded-lg items-center'>
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 </svg>
-<span className='font-bold ml-2' onClick={()=>setOpen(true)}>Create a Memory</span>
+<span className='font-bold ml-2 hidden sm:block' onClick={()=>setOpen(true)}>Create a Memory</span>
+<span className='font-bold ml-2 block sm:hidden' onClick={()=>setOpen(true)}>Create</span>
 </button>        
 </div>
 </div>
 
-<div className="flex flex-wrap">
+<div className="flex flex-wrap justify-center sm:justify-normal">
 {
 memories?.map((memory:Memory)=>(
 <Link href={`/memories/${memory?._id}`} key={memory?._id}><MemoryCard memory={memory}/></Link>

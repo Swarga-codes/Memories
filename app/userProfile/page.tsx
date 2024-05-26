@@ -61,7 +61,7 @@ function Page() {
         e.preventDefault()
         updateProfile()
       }}>
-      <div className='w-1/3 mt-4'>
+      <div className='w-full sm:w-1/3 mt-4'>
       <label
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         htmlFor="username"
@@ -77,7 +77,7 @@ function Page() {
         onChange={(e)=>setUsername(e.target.value)}
       ></input>
     </div>
-    <div className='w-1/3 mt-4'>
+    <div className='w-full sm:w-1/3 mt-4'>
       <label
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         htmlFor="email"

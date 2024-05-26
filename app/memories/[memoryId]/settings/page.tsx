@@ -106,7 +106,7 @@ fetchUsersBasedOnSearchQuery()
         e.preventDefault()
         updateMemoryDetails()
       }}>
-      <div className='w-1/3 mt-4'>
+      <div className='w-full sm:w-1/3 mt-4'>
       <label
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         htmlFor="title"
@@ -122,7 +122,7 @@ fetchUsersBasedOnSearchQuery()
         onChange={(e)=>setTitle(e.target.value)}
       ></input>
     </div>
-    <div className="w-1/3 mt-4">
+    <div className="w-full sm:w-1/3 mt-4">
       <label
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         htmlFor="description"
@@ -137,7 +137,7 @@ fetchUsersBasedOnSearchQuery()
         onChange={(e)=>setDescription(e.target.value)}
       ></textarea>
     </div>
-    <div className="w-full mt-4">
+    <div className="w-full sm:w-1/3 mt-4">
       <label
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         htmlFor="memoryCoverPic"
@@ -164,7 +164,7 @@ fetchUsersBasedOnSearchQuery()
     </div>
 
     </div>
-    <div className='w-1/3 mt-4'>
+    <div className='w-full sm:w-1/3 mt-4'>
     <label
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         htmlFor="memoryParticipants"
@@ -206,7 +206,7 @@ fetchUsersBasedOnSearchQuery()
       </div>}
       <div className='flex flex-wrap mt-4'>
      {memoryParticipants?.map((participant:User)=>(
-      <div className='bg-blue-500 flex p-2 rounded-md ml-2' key={participant?._id}>
+      <div className='bg-blue-500 flex p-2 rounded-md ml-2 my-2' key={participant?._id}>
         <p>{participant?.username}</p>
       {memoryData?.createdBy?._id===participant?._id?
 <span className='font-bold'> (Author)</span>

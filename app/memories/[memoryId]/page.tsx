@@ -103,7 +103,7 @@ if(typeof localStorage!=undefined){
   <h1 className="p-10 text-bold">Loading data....</h1>
   :
   <>
- <div className='p-10'>
+ <div className='p-6 sm:p-10'>
         <div className='flex'>
         <h1 className='text-2xl font-bold'>{memoryData?.title}</h1>
         <button className='flex p-2 bg-pink-600 rounded-md ml-auto' onClick={() => setOpen(true)}>
@@ -111,7 +111,8 @@ if(typeof localStorage!=undefined){
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
 </svg>
-            <span className='ml-2'>Upload Images</span>
+            <span className='ml-2 hidden sm:block'>Upload Images</span>
+            <span className='ml-2 block sm:hidden'>Upload</span>
         </button>
        {userId===memoryData?.createdBy._id && <button className='ml-4'>
           <Link href={`/memories/${memoryId}/settings`}>
@@ -123,7 +124,7 @@ if(typeof localStorage!=undefined){
 </Link>
 </button> } 
         </div>
-     <p>Created by {memoryData?.createdBy?.username} on {memoryData?.createdAt?.toString()?.substring(0,10)}</p>
+     <p className='mt-4'>Created by {memoryData?.createdBy?.username} on {memoryData?.createdAt?.toString()?.substring(0,10)}</p>
      <p className='font-bold italic'>&quot;{memoryData?.description}&quot;</p>
      <button className='flex p-2 bg-green-600 rounded-md mt-4' onClick={()=>{
       if(window.confirm(`Do you really want to download the memory ${memoryData?.title} as zip?`)){
