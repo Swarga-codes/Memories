@@ -22,6 +22,7 @@ export default function Navbar() {
       const data=await response.json()
       if(data.success){
           setProfilePic(data?.userData?.profilePic)
+          localStorage.setItem('profilePic',data?.userData?.profilePic)
       }
       else{
           toast.error(data.message)
@@ -44,6 +45,11 @@ export default function Navbar() {
   if(!publicRoutes.includes(pathname)){
     fetchUserData()
   }
+  },[])
+  useEffect(()=>{
+    if(typeof localStorage!==undefined){
+      setProfilePic(localStorage.getItem('profilePic') || "")
+    }
   },[])
   if(publicRoutes.includes(pathname)){
     return

@@ -29,6 +29,7 @@ export default function UploadImagesDialog({open,setOpen,memoryId,fetchMemoryIma
     else{
         toast.error(data.message)
     }
+    setImageUrls([])
 }
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -85,7 +86,15 @@ export default function UploadImagesDialog({open,setOpen,memoryId,fetchMemoryIma
 <div className='mt-4 flex flex-wrap'>
     {
         imageUrls?.map((url,idx)=>(
-            <Image src={url.fileUrl} alt={url.fileName} height={200} width={140} key={idx}/>
+          <div  key={idx} className='m-2 flex'>
+            <Image src={url.fileUrl} alt={url.fileName} height={200} width={140}/>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" className="size-5 mt-[-1rem] bg-red-500 rounded-xl cursor-pointer" onClick={()=>{
+              let removedCurrentImage=imageUrls.filter((imageUrl:any)=>imageUrl.fileUrl!==url.fileUrl)
+              setImageUrls([...removedCurrentImage])
+            }}>
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>
+            </div>
         ))
     }
 </div>
